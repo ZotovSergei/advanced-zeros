@@ -1,81 +1,101 @@
 module.exports = function getZerosCount(number, base) {
-  let arrayFactorization = [];
-  let tmp = base;
-  let tr = 2;
-  let nBase = 0;
-  let count = 0;
-  while (tmp != 1) {
-    let step = 0;
-    while (tmp % tr == 0) {
-      // tmp = ( Number(tmp / tr.toFixed()) ) ;
-      tmp = (tmp / tr);
-      step++;
+ 
+  // return  ( Math.floor( Number(step / count).toFixed()) );
+
+  let factor = factorization(base);
+
+  function factorization(base) {
+    let objectArraysFactor = [];
+    let exNum = 2;
+    while (base != 1) {
+      let step = 0;
+      while (base % exNum == 0) {
+        base = base / exNum;
+        step++;
+      }
+      if (step != 0) {
+        objectArraysFactor.push({
+          exNum,
+          step
+        });
+      }
+      exNum++;
     }
-    if (step != 0) {
-      nBase = tr;
-      count = step;
-      console.log(`tr: ${tr}, step: ${step}, tmp:  ${tmp}, nBase: ${nBase}`);
-    }
-    tr++;
+    return objectArraysFactor;
   }
 
-  let tmpBase = nBase;
-  let step = 0;
-  while (tmpBase<=number) {
-    let tmp = tmpBase;
-    while (tmp % nBase == 0) {
-      // tmp = ( Number(tmp / nBase.toFixed()) ) ;
-      tmp = ( tmp / nBase ) ;
-      step++;
+  let result = 10000000000000000000;
+  for (const key in factor) {
+    if (factor.hasOwnProperty(key)) {
+      const exNumFactor = factor[key]['exNum'];
+      const stepFactor = factor[key]['step'];
+      let tmpExNum = exNumFactor;
+      let step = 0;
+      while (tmpExNum <= number) {
+        let el = tmpExNum;
+        while (el % exNumFactor == 0) {
+          el = el / exNumFactor;
+          step++;
+        }
+        tmpExNum = tmpExNum + exNumFactor;
+      }
+      let tmpResult = step/stepFactor;
+      if (tmpResult <= result) {
+        result = tmpResult;
+      }
     }
-    tmpBase = tmpBase+nBase;
   }
-  if (step%count==5) {
-    return Math.ceil(step/count); 
-  } else {
-    return Math.floor(step/count); 
-  }
-  // return  ( Math.floor( Number(step / count).toFixed()) );
+  return Math.floor(result);
 }
 
 
 // function getZerosCount(number, base) {
-//   // your implementation
-//   let arrayFactorization = [];
-//   let tmp = base;
-//   let tr = 2;
-//   let nBase = 0;
-//   let count = 0;
-//   while (tmp != 1) {
-//     let step = 0;
-//     while (tmp % tr == 0) {
-//       tmp = ( Number(tmp / tr.toFixed()) ) ;
-//       step++;
+
+//   let factor = factorization(base);
+
+//   function factorization(base) {
+//     let objectArraysFactor = [];
+//     let exNum = 2;
+//     while (base != 1) {
+//       let step = 0;
+//       while (base % exNum == 0) {
+//         base = base / exNum;
+//         step++;
+//       }
+//       if (step != 0) {
+//         objectArraysFactor.push({
+//           exNum,
+//           step
+//         });
+//       }
+//       exNum++;
 //     }
-//     if (step != 0) {
-//       nBase = tr;
-//       count = step;
-//       console.log(`tr: ${tr}, step: ${step}, tmp:  ${tmp}, nBase: ${nBase}`);
-//     }
-//     tr++;
+//     return objectArraysFactor;
 //   }
 
-//   let tmpBase = nBase;
-//   let step = 0;
-//   while (tmpBase<=number) {
-//     let tmp = tmpBase;
-//     while (tmp % nBase == 0) {
-//       tmp = ( Number(tmp / nBase.toFixed()) ) ;
-//       step++;
+//   let result = 10000000000000000000;
+//   for (const key in factor) {
+//     if (factor.hasOwnProperty(key)) {
+//       const exNumFactor = factor[key]['exNum'];
+//       const stepFactor = factor[key]['step'];
+//       let tmpExNum = exNumFactor;
+//       let step = 0;
+//       while (tmpExNum <= number) {
+//         let el = tmpExNum;
+//         while (el % exNumFactor == 0) {
+//           el = el / exNumFactor;
+//           step++;
+//         }
+//         tmpExNum = tmpExNum + exNumFactor;
+//       }
+//       let tmpResult = Math.floor(step/stepFactor);
+//       if (tmpResult <= result) {
+//         result = tmpResult;
+//       }
+      
 //     }
-//     tmpBase = tmpBase+nBase;
 //   }
-//   if (step%count==5) {
-//     return console.log(Math.ceil(step/count)); 
-//   } else {
-//     return console.log(Math.floor(step/count)); 
-//   }
-//   console.log(step / count);
+//   return Math.floor(result);
 // }
 
-// getZerosCount(72300914, 160);
+// getZerosCount(105, 10);
