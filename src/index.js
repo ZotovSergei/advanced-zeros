@@ -1,11 +1,11 @@
 module.exports = function getZerosCount(number, base) {
- 
-  // return  ( Math.floor( Number(step / count).toFixed()) );
+
 
   let factor = factorization(base);
 
   function factorization(base) {
     let objectArraysFactor = [];
+    let data = [];
     let exNum = 2;
     while (base != 1) {
       let step = 0;
@@ -14,10 +14,9 @@ module.exports = function getZerosCount(number, base) {
         step++;
       }
       if (step != 0) {
-        objectArraysFactor.push({
-          exNum,
-          step
-        });
+        data.push(exNum, step)
+        objectArraysFactor.push(data);
+        data = [];
       }
       exNum++;
     }
@@ -25,27 +24,46 @@ module.exports = function getZerosCount(number, base) {
   }
 
   let result = 10000000000000000000;
-  for (const key in factor) {
-    if (factor.hasOwnProperty(key)) {
-      const exNumFactor = factor[key]['exNum'];
-      const stepFactor = factor[key]['step'];
-      let tmpExNum = exNumFactor;
-      let step = 0;
-      while (tmpExNum <= number) {
-        let el = tmpExNum;
-        while (el % exNumFactor == 0) {
-          el = el / exNumFactor;
-          step++;
-        }
-        tmpExNum = tmpExNum + exNumFactor;
-      }
-      let tmpResult = step/stepFactor;
-      if (tmpResult <= result) {
-        result = tmpResult;
+  let exNumFactor = 0;
+  let stepFactor = 1;
+
+  if (factor.length < 3) {
+    if (factor.length == 1) {
+      exNumFactor = factor[0][0];
+      stepFactor = factor[0][1];
+    }
+    else if (factor[0][0] == 2 && (factor[0][1] >= ((factor[1][0] - 1) * (factor[1][1] + 1)))) {
+      exNumFactor = factor[0][0];
+      stepFactor = factor[0][1];
+    } else {
+      if (factor.length == 1) {
+        exNumFactor = factor[0][0];
+        stepFactor = factor[0][1];
+      } else {
+        exNumFactor = factor[1][0];
+        stepFactor = factor[1][1];
       }
     }
+  } else {
+    exNumFactor = factor[factor.length - 1][0];
+    stepFactor = factor[factor.length - 1][1];
   }
-  return Math.floor(result);
+  let tmpExNum = exNumFactor;
+  let step = 0;
+  while (tmpExNum <= number) {
+    let el = tmpExNum;
+    while (el % exNumFactor == 0) {
+      el = el / exNumFactor;
+      step++;
+    }
+    tmpExNum = tmpExNum + exNumFactor;
+  }
+  let tmpResult = Math.floor(step / stepFactor);
+  if (tmpResult <= result) {
+    result = tmpResult;
+  }
+
+  return result;
 }
 
 
@@ -55,6 +73,7 @@ module.exports = function getZerosCount(number, base) {
 
 //   function factorization(base) {
 //     let objectArraysFactor = [];
+//     let data = [];
 //     let exNum = 2;
 //     while (base != 1) {
 //       let step = 0;
@@ -63,39 +82,72 @@ module.exports = function getZerosCount(number, base) {
 //         step++;
 //       }
 //       if (step != 0) {
-//         objectArraysFactor.push({
-//           exNum,
-//           step
-//         });
+//         data.push(exNum, step)
+//         objectArraysFactor.push(data);
+//         data = [];
 //       }
 //       exNum++;
 //     }
 //     return objectArraysFactor;
 //   }
+//   for (let i = 0; i < factor.length; i++) {
+//     const element = factor[i];
+//     console.log(element);
+//   }
+//   console.log(factor);
 
 //   let result = 10000000000000000000;
-//   for (const key in factor) {
-//     if (factor.hasOwnProperty(key)) {
-//       const exNumFactor = factor[key]['exNum'];
-//       const stepFactor = factor[key]['step'];
-//       let tmpExNum = exNumFactor;
-//       let step = 0;
-//       while (tmpExNum <= number) {
-//         let el = tmpExNum;
-//         while (el % exNumFactor == 0) {
-//           el = el / exNumFactor;
-//           step++;
-//         }
-//         tmpExNum = tmpExNum + exNumFactor;
-//       }
-//       let tmpResult = Math.floor(step/stepFactor);
-//       if (tmpResult <= result) {
-//         result = tmpResult;
-//       }
-      
+//   // for (const key in factor) {
+//   //   if (factor.hasOwnProperty(key)) {
+//   //     const exNumFactor = factor[key]['exNum'];
+//   //     const stepFactor = factor[key]['step'];
+//   let exNumFactor = 0;
+//   let stepFactor = 1;
+//   // console.log(factor[0][0]);
+//   // console.log(factor[0][1]);
+//   // console.log(factor[1][0]);
+//   // console.log(factor[1][1]);
+//   console.log(factor[factor.length - 1][0]);
+//   console.log(factor[factor.length - 1][1]);
+//   if (factor.length < 3) {
+//     if (factor.length == 1) {
+//       exNumFactor = factor[0][0];
+//       stepFactor = factor[0][1];
 //     }
+//     else if (factor[0][0] == 2 && (factor[0][1] >= ((factor[1][0] - 1) * (factor[1][1] + 1)))) {
+//       exNumFactor = factor[0][0];
+//       stepFactor = factor[0][1];
+//     } else {
+//       if (factor.length == 1) {
+//         exNumFactor = factor[0][0];
+//         stepFactor = factor[0][1];
+//       } else {
+//         exNumFactor = factor[1][0];
+//         stepFactor = factor[1][1];
+//       }
+//     }
+//   } else {
+//     exNumFactor = factor[factor.length - 1][0];
+//     stepFactor = factor[factor.length - 1][1];
 //   }
-//   return Math.floor(result);
+
+//   console.log(exNumFactor);
+//   console.log(stepFactor);
+//   let tmpExNum = exNumFactor;
+//   let step = 0;
+//   while (tmpExNum <= number) {
+//     let el = tmpExNum;
+//     while (el % exNumFactor == 0) {
+//       el = el / exNumFactor;
+//       step++;
+//     }
+//     tmpExNum = tmpExNum + exNumFactor;
+//   }
+//   let tmpResult = (step / stepFactor);
+//   if (tmpResult <= result) {
+//     result = tmpResult;
+//   }
+//   console.log(result);
 // }
 
-// getZerosCount(105, 10);
+// getZerosCount(70497638, 2);
